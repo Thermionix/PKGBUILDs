@@ -23,10 +23,8 @@ license=('custom')
 
 # https://github.com/iXit/Mesa-3D/archive/master.zip
 source=("$pkgname"::'git+https://github.com/iXit/Mesa-3D.git#branch=master'
-         'temp_compile_fix.patch'
         'LICENSE')
 md5sums=('SKIP'
-         'SKIP'
          '5c65a0fe315dd347e09b1f2826a1df5a')
 
 pkgver() {
@@ -45,8 +43,6 @@ build () {
   #git remote add upstream git://anongit.freedesktop.org/mesa/mesa
   #git fetch upstream
   #git merge --no-edit upstream/master
-
-  patch -Np1 -i ../temp_compile_fix.patch
 
   autoreconf -vfi # our automake is far too new for their build system :)
 
