@@ -6,7 +6,7 @@ post_install() {
 	echo "Please create your ~/.wine with 'WINEARCH=win32 winecfg' if you are unsure and on x86_64."
 	echo "See the Arch wiki on wine for more information."
 	echo "To use the d3dadapter in your instance you must set UseNative=1 in the registry"
-	echo "e.g. wine reg.exe ADD HKCU\Software\Wine\Direct3D /v UseNative /t REG_DWORD /d 1
+	echo "e.g. wine reg.exe ADD HKCU\Software\Wine\Direct3D /v UseNative /t REG_DWORD /d 1"
 }
 
 post_remove() {
