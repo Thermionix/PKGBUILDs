@@ -23,8 +23,10 @@ license=('custom')
 
 # https://github.com/iXit/Mesa-3D/archive/master.zip
 source=("$pkgname"::'git+https://github.com/iXit/Mesa-3D.git#branch=master'
+         'temp_compile_fix.patch'
         'LICENSE')
 md5sums=('SKIP'
+         'SKIP'
          '5c65a0fe315dd347e09b1f2826a1df5a')
 
 pkgver() {
@@ -43,6 +45,8 @@ build () {
   #git remote add upstream git://anongit.freedesktop.org/mesa/mesa
   #git fetch upstream
   #git merge --no-edit upstream/master
+
+  patch -Np1 -i ../temp_compile_fix.patch
 
   autoreconf -vfi # our automake is far too new for their build system :)
 
@@ -99,13 +103,11 @@ package_opencl-mesa-git () {
 
   install -m755 -d "${pkgdir}/usr/share/licenses/opencl-mesa"
   install -m644 "${srcdir}/LICENSE" "${pkgdir}/usr/share/licenses/opencl-mesa/"
-
-  ln -s opencl-mesa "${pkgdir}/usr/share/licenses/${pkgname}"
 }
 
 package_ati-dri-git () {
   pkgdesc="Mesa drivers for AMD/ATI Radeon"
-  depends=('mesa-libgl' 'libtxc_dxtn' "mesa=$(_mesaver)")
+  depends=('mesa-libgl' 'libtxc_dxtn' 'libomxil-bellagio' "mesa=$(_mesaver)")
   conflicts=('ati-dri')
   provides=('ati-dri')
 
@@ -123,8 +125,6 @@ package_ati-dri-git () {
 
   install -m755 -d "${pkgdir}/usr/share/licenses/ati-dri"
   install -m644 "${srcdir}/LICENSE" "${pkgdir}/usr/share/licenses/ati-dri/"
-
-  ln -s ati-dri "${pkgdir}/usr/share/licenses/${pkgname}"
 }
 
 package_intel-dri-git () {
@@ -138,13 +138,11 @@ package_intel-dri-git () {
 
   install -m755 -d "${pkgdir}/usr/share/licenses/intel-dri"
   install -m644 "${srcdir}/LICENSE" "${pkgdir}/usr/share/licenses/intel-dri/"
-
-  ln -s intel-dri "${pkgdir}/usr/share/licenses/${pkgname}"
 }
 
 package_nouveau-dri-git () {
   pkgdesc="Mesa drivers for Nouveau"
-  depends=('mesa-libgl' 'libtxc_dxtn' "mesa=$(_mesaver)")
+  depends=('mesa-libgl' 'libtxc_dxtn' 'libomxil-bellagio' "mesa=$(_mesaver)")
   conflicts=('nouveau-dri')
   provides=('nouveau-dri')
 
@@ -162,8 +160,6 @@ package_nouveau-dri-git () {
   
   install -m755 -d "${pkgdir}/usr/share/licenses/nouveau-dri"
   install -m644 "${srcdir}/LICENSE" "${pkgdir}/usr/share/licenses/nouveau-dri/"
-
-  ln -s nouveau-dri "${pkgdir}/usr/share/licenses/${pkgname}"
 }
 
 package_svga-dri-git () {
@@ -180,13 +176,11 @@ package_svga-dri-git () {
   
   install -m755 -d "${pkgdir}/usr/share/licenses/svga-dri"
   install -m644 "${srcdir}/LICENSE" "${pkgdir}/usr/share/licenses/svga-dri/"
-
-  ln -s svga-dri "${pkgdir}/usr/share/licenses/${pkgname}"
 }
 
 package_mesa-git () {
   pkgdesc="an open-source implementation of the OpenGL specification"
-  depends=('libdrm' 'libvdpau' 'wayland' 'libxxf86vm' 'libxdamage' 'libxshmfence' 'systemd' 'elfutils' 'llvm-libs' 'libomxil-bellagio')
+  depends=('libdrm' 'libvdpau' 'wayland' 'libxxf86vm' 'libxdamage' 'libxshmfence' 'systemd' 'elfutils' 'llvm-libs')
   optdepends=('opengl-man-pages: for the OpenGL API man pages')
   provides=("mesa=$(_mesaver)" 'libglapi' 'osmesa' 'libgbm' 'libgles' 'libegl' 'khrplatform-devel')
   conflicts=('mesa' 'libglapi' 'osmesa' 'libgbm' 'libgles' 'libegl' 'khrplatform-devel')
@@ -214,8 +208,6 @@ package_mesa-git () {
 
   install -m755 -d "${pkgdir}/usr/share/licenses/mesa"
   install -m644 "${srcdir}/LICENSE" "${pkgdir}/usr/share/licenses/mesa/"
-
-  ln -s mesa "${pkgdir}/usr/share/licenses/${pkgname}"
 }
 
 package_mesa-libgl-git () {
@@ -247,6 +239,4 @@ package_mesa-libgl-git () {
 
   install -m755 -d "${pkgdir}/usr/share/licenses/mesa-libgl"
   install -m644 "${srcdir}/LICENSE" "${pkgdir}/usr/share/licenses/mesa-libgl/"
-
-  ln -s mesa-libgl "${pkgdir}/usr/share/licenses/${pkgname}"
 }
