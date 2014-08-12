@@ -10,8 +10,8 @@
 # Contributor: Diego Jose <diegoxter1006@gmail.com>
 
 pkgbase=mesa-d3d9-git
-pkgname=('ati-dri-d3d9-git' 'nouveau-dri-d3d9-git' 'mesa-d3d9-git' 'mesa-libgl-d3d9-git')
-pkgver=10.3.0_devel.64185
+pkgname=('mesa-d3d9-git' 'ati-dri-d3d9-git' 'nouveau-dri-d3d9-git' 'mesa-libgl-d3d9-git')
+pkgver=10.3.0_devel.64448
 pkgrel=1
 arch=('i686' 'x86_64')
 makedepends=('python2' 'libxml2' 'libx11' 'glproto' 'libdrm' 'dri2proto' 'dri3proto' 'presentproto' 
