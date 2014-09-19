@@ -1,0 +1,15 @@
+post_install() {
+	getent group octopi > /dev/null || groupadd octopi
+	getent passwd octopi > /dev/null || useradd -m -d /var/lib/octopi -g octopi octopi
+	usermod -a -G octopi,network,uucp,tty octopi
+	chown -R octopi:octopi /var/lib/octopi
+}
+
+post_upgrade() {
+  post_install $1
+}
+
+post_remove() {
+  post_install $1
+  echo "You may want to remove octopi user and group"
+}
