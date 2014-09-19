@@ -1,8 +1,8 @@
 post_install() {
-	getent group octopi > /dev/null || groupadd octopi
-	getent passwd octopi > /dev/null || useradd -m -d /var/lib/octopi -g octopi octopi
-	usermod -a -G octopi,network,uucp,tty octopi
-	chown -R octopi:octopi /var/lib/octopi
+	getent group octoprint > /dev/null || groupadd octoprint
+	getent passwd octoprint > /dev/null || useradd -m -d /var/lib/octoprint -g octoprint octoprint
+	usermod -a -G octoprint,network,uucp,tty octoprint
+	chown -R octoprint:octoprint /var/lib/octoprint
 }
 
 post_upgrade() {
@@ -11,5 +11,5 @@ post_upgrade() {
 
 post_remove() {
   post_install $1
-  echo "You may want to remove octopi user and group"
+  echo "You may want to remove octoprint user and group"
 }

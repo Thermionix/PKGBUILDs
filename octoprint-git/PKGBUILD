@@ -20,7 +20,7 @@ source=( "$pkgname"::'git+https://github.com/foosel/OctoPrint.git'
 	octoprint.service)
 md5sums=('SKIP'
          '3bee9901c9eabed94b7f9236f83bf053'
-         '7cf90cc48859d992eb553935fa95a331')
+         'ec5e51f876bb5fb223801bf28850908a')
 
 pkgver() {
     cd "$srcdir/$pkgname"
