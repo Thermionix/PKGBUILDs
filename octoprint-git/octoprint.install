@@ -1,8 +1,11 @@
 post_install() {
+	local HOMEDIR=/var/lib/octoprint
 	getent group octoprint > /dev/null || groupadd octoprint
-	getent passwd octoprint > /dev/null || useradd -m -d /var/lib/octoprint -g octoprint octoprint
+	getent passwd octoprint > /dev/null || useradd -d $HOMEDIR -g octoprint octoprint
 	usermod -a -G octoprint,network,uucp,tty octoprint
-	chown -R octoprint:octoprint /var/lib/octoprint
+	mkdir -p $HOMEDIR
+	chmod 700 $HOMEDIR
+	chown -R octoprint:octoprint $HOMEDIR
 }
 
 post_upgrade() {
