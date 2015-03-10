@@ -3,12 +3,11 @@
 # Based on the wine package in the community repository
 
 pkgname=wine-d3dadapter-git
-pkgver=909ab21
+pkgver=1.7.37.104137
 pkgrel=1
 pkgdesc="A compatibility layer for running Windows programs. Latest GIT version."
 url="http://www.winehq.com"
 arch=('i686' 'x86_64')
-options=(staticlibs)
 license='LGPL'
 install='wine-git.install'
 
@@ -42,19 +41,16 @@ makedepends=(autoconf ncurses bison perl fontforge flex prelink
   libxxf86vm      lib32-libxxf86vm
   libxml2         lib32-libxml2
   libldap         lib32-libldap
-  lcms2           lib32-lcms2
+  lcms            lib32-lcms
   mpg123          lib32-mpg123
   openal          lib32-openal
   v4l-utils       lib32-v4l-utils
   alsa-lib        lib32-alsa-lib
   libxcomposite   lib32-libxcomposite
   mesa            lib32-mesa
-  mesa-libgl      lib32-mesa-libgl
-  libcl           lib32-libcl
-  libxslt         lib32-libxslt
   samba
-  opencl-headers
   git
+  dri2proto
 )
   
 optdepends=(
@@ -62,7 +58,7 @@ optdepends=(
   libpng          lib32-libpng
   libldap         lib32-libldap
   gnutls          lib32-gnutls
-  lcms2           lib32-lcms2
+  lcms            lib32-lcms
   libxml2         lib32-libxml2
   mpg123          lib32-mpg123
   openal          lib32-openal
@@ -75,7 +71,6 @@ optdepends=(
   libxinerama     lib32-libxinerama
   ncurses         lib32-ncurses
   libcl           lib32-libcl
-  libxslt         lib32-libxslt
   cups
   samba           dosbox
 )
@@ -104,13 +99,14 @@ else
 fi
 
 pkgver() {
-  #date +%Y%m%d
   cd "$srcdir/$pkgname"
-  git describe --always --long | sed -E 's/([^-]*-g)/r\1/;s/-/./g;s/^wine.//'
+  echo $(cat VERSION | tr "-" "_" | grep -oP '[\d.]+').$(git rev-list --count HEAD)
 }
 
 build() {
   cd "$srcdir"
+
+
   # ncurses fix
   sed -i 's|libncurses|libncursesw|g' "$srcdir/$pkgname/configure"
   sed -i 's|lncurses|lncursesw|g' "$srcdir/$pkgname/configure"
@@ -123,15 +119,18 @@ build() {
   export CPPFLAGS="${CPPFLAGS/-D_FORTIFY_SOURCE=2/} -D_FORTIFY_SOURCE=0"
 
   if [[ $CARCH == x86_64 ]]; then
+
     msg2 "Building Wine-64..."
 
     mkdir $pkgname-64-build
     cd "$srcdir/$pkgname-64-build"
     ../$pkgname/configure \
+      --disable-tests \
       --prefix=/usr \
       --libdir=/usr/lib \
       --with-x \
       --without-gstreamer \
+      --without-d3dadapter \
       --enable-win64
     # Gstreamer was disabled for FS#33655
 
@@ -148,9 +147,11 @@ build() {
   msg2 "Building Wine-32..."
   cd "$srcdir/$pkgname-32-build"
   ../$pkgname/configure \
+    --disable-tests \
     --prefix=/usr \
     --with-x \
     --without-gstreamer \
+    --without-d3dadapter \
     "${_wine32opts[@]}"
 
   # These additional flags solve FS#23277
@@ -183,4 +184,3 @@ package() {
   ln -s ../conf.avail/30-win32-aliases.conf "$pkgdir/etc/fonts/conf.d/30-win32-aliases.conf"
 }
 
-# vim:set ts=8 sts=2 sw=2 et:
